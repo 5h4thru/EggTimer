@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
     TextView timerText = null;
     ImageView imageView = null;
     SeekBar seekBar = null;
-    boolean counterIsActive = false;
+    boolean counterIsActive = false; // counter is not active initially
     CountDownTimer countDownTimer = null;
 
     @Override
@@ -64,11 +64,11 @@ public class MainActivity extends AppCompatActivity {
         timerText.setText(minutesString+ ":" + secondsString);
     }
 
+    // control Timer form the button
     public void controlTimer(View view) {
         seekBar = (SeekBar) findViewById(R.id.seekBar);
         button = (Button) findViewById(R.id.button);
         timerText = (TextView) findViewById(R.id.timerText);
-        counterIsActive = false;
 
         if(seekBar.isEnabled() && !counterIsActive) {
             seekBar.setEnabled(false);
@@ -82,17 +82,23 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onFinish() {
-                    timerText.setText("00:00");
+                    resetTimer();
                     MediaPlayer mPlayer = MediaPlayer.create(getApplicationContext(), R.raw.airhorn);
                     mPlayer.start();
                 }
             }.start();
         } else {
-            seekBar.setEnabled(true);
-            button.setText("Start");
-            timerText.setText("00:30");
-            seekBar.setProgress(30);
-            countDownTimer.cancel();
+            resetTimer();
         }
+    }
+
+    // reset timer helper method
+    public void resetTimer() {
+        seekBar.setEnabled(true);
+        button.setText("Start");
+        timerText.setText("00:30");
+        seekBar.setProgress(30);
+        countDownTimer.cancel();
+        counterIsActive = false;
     }
 }
